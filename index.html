@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Invitación interactiva al cumpleaños número 20 de Candela Frías."
+    />
+    <title>Cumple 20 de Candela Frías</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Paytone+One&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <canvas id="partyCanvas" aria-hidden="true"></canvas>
+    <div class="rain-layer" id="rainLayer" aria-hidden="true"></div>
+    <div class="boliche-lights" aria-hidden="true"></div>
+    <div class="alarm-flash" aria-hidden="true"></div>
+
+    <button class="sound-toggle" id="musicToggle" type="button" aria-pressed="false">
+      <i class="fa-solid fa-volume-xmark" aria-hidden="true"></i>
+      <span>Música</span>
+    </button>
+
+    <main class="invite-shell" id="inviteShell">
+      <section class="hero reveal" aria-labelledby="heroTitle">
+        <div class="hero-copy">
+          <h1 id="heroTitle" class="animate__animated animate__fadeInUp">
+            <span class="emoji-pop" aria-hidden="true">🎉</span>
+            ¡Estás invitado al cumpleaños número 20 de Candela!
+            <span class="emoji-pop" aria-hidden="true">🎉</span>
+          </h1>
+          <button class="age-number" id="ageNumber" type="button" aria-label="Número 20">
+            20
+          </button>
+          <p class="hero-subtitle">
+            Va a haber comida, música, risas y probablemente malas decisiones.
+          </p>
+          <div class="hero-actions">
+            <button class="primary-action" id="confirmBtn" type="button">
+              <i class="fa-solid fa-champagne-glasses" aria-hidden="true"></i>
+              Confirmar asistencia
+            </button>
+            <a class="ghost-action" id="whatsAppShare" href="#" target="_blank" rel="noreferrer">
+              <i class="fa-brands fa-whatsapp" aria-hidden="true"></i>
+              WhatsApp
+            </a>
+            <a class="ghost-action" id="calendarLink" href="#" target="_blank" rel="noreferrer">
+              <i class="fa-regular fa-calendar-plus" aria-hidden="true"></i>
+              Calendario
+            </a>
+          </div>
+          <p class="side-joke">Dress code: venir con ganas de cantar aunque no sepas la letra.</p>
+        </div>
+
+        <div class="hero-stage" aria-hidden="true">
+          <div class="cake-card animate__animated animate__zoomIn">
+            <span class="cake-top">Candela</span>
+            <span class="cake-big">20</span>
+            <span class="cake-bottom">modo fiesta</span>
+          </div>
+          <span class="floating-balloon balloon-one"></span>
+          <span class="floating-balloon balloon-two"></span>
+          <span class="floating-balloon balloon-three"></span>
+          <span class="sparkle sparkle-one">✦</span>
+          <span class="sparkle sparkle-two">✧</span>
+          <span class="sparkle sparkle-three">✦</span>
+        </div>
+      </section>
+
+      <section class="event-grid reveal" aria-label="Información del evento">
+        <article class="info-card">
+          <i class="fa-solid fa-calendar-days" aria-hidden="true"></i>
+          <span>Domingo 26 de julio de 2026</span>
+        </article>
+        <article class="info-card">
+          <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
+          <span>Calle 10 4630 - Piso 8</span>
+        </article>
+        <article class="info-card">
+          <i class="fa-solid fa-cake-candles" aria-hidden="true"></i>
+          <span>Cumple de Candela</span>
+        </article>
+        <article class="info-card">
+          <i class="fa-solid fa-clock" aria-hidden="true"></i>
+          <span>Horario a confirmar</span>
+        </article>
+      </section>
+
+      <section class="countdown-section reveal" aria-labelledby="countdownTitle">
+        <div>
+          <h2 id="countdownTitle">Cuenta regresiva</h2>
+          <p>El reloj está practicando ansiedad escénica.</p>
+        </div>
+        <div class="countdown" id="countdown" aria-live="polite">
+          <div><strong id="days">00</strong><span>días</span></div>
+          <div><strong id="hours">00</strong><span>horas</span></div>
+          <div><strong id="minutes">00</strong><span>min</span></div>
+          <div><strong id="seconds">00</strong><span>seg</span></div>
+        </div>
+      </section>
+
+      <section class="rsvp-map-layout reveal" id="confirmacion" aria-label="Confirmación">
+        <form class="party-form" id="rsvpForm" novalidate>
+          <div class="form-head">
+            <h2>Confirmá tu lugar</h2>
+            <p>Prometemos usar esta información solo para calcular comida y nivel de caos.</p>
+          </div>
+
+          <label class="field-label" for="guestName">Nombre</label>
+          <input
+            class="text-field"
+            id="guestName"
+            name="guestName"
+            type="text"
+            autocomplete="name"
+            placeholder="Tu nombre va acá, estrella"
+            required
+          />
+
+          <fieldset class="choice-group">
+            <legend>¿Vas a venir?</legend>
+            <label class="choice">
+              <input type="radio" name="attendance" value="Sí" />
+              <span><i class="fa-solid fa-face-laugh-beam" aria-hidden="true"></i>Sí</span>
+            </label>
+            <label class="choice" id="attendanceNoLabel">
+              <input id="attendanceNo" type="radio" name="attendance" value="No" />
+              <span><i class="fa-solid fa-cloud-rain" aria-hidden="true"></i>No</span>
+            </label>
+          </fieldset>
+
+          <div class="reaction-panel sad-panel" id="sadPanel" hidden>
+            <i class="fa-solid fa-heart-crack" aria-hidden="true"></i>
+            <strong>El playlist acaba de bajar 30 BPM.</strong>
+            <span>La tristeza dura unos segundos, después seguimos con dignidad.</span>
+          </div>
+
+          <fieldset class="choice-group">
+            <legend>¿Traés regalo?</legend>
+            <label class="choice" id="giftYesLabel">
+              <input type="radio" name="gift" value="Sí" />
+              <span><i class="fa-solid fa-gift" aria-hidden="true"></i>Sí 🎁</span>
+            </label>
+            <label class="choice" id="giftNoLabel">
+              <input type="radio" name="gift" value="No" />
+              <span><i class="fa-solid fa-face-grin-beam-sweat" aria-hidden="true"></i>No 😅</span>
+            </label>
+          </fieldset>
+
+          <div class="reaction-panel gift-police" id="giftPolice" hidden>
+            <img
+              src="https://media.giphy.com/media/RYjnzPS8u0jAs/giphy.gif"
+              alt="Policía del regalo"
+              loading="lazy"
+            />
+            <div>
+              <strong>⚠️ Error 404: Amigo generoso no encontrado.</strong>
+              <span>Bueno… igual podés venir 😎</span>
+            </div>
+          </div>
+
+          <div class="reaction-panel gift-hero" id="giftHero" hidden>
+            <i class="fa-solid fa-crown" aria-hidden="true"></i>
+            <strong>Sos oficialmente la persona favorita de Candela ❤️</strong>
+          </div>
+
+          <fieldset class="choice-group drinks">
+            <legend>¿Qué vas a tomar?</legend>
+            <label class="choice">
+              <input type="radio" name="drink" value="Fernet" />
+              <span><i class="fa-solid fa-martini-glass-citrus" aria-hidden="true"></i>Fernet</span>
+            </label>
+            <label class="choice">
+              <input type="radio" name="drink" value="Cerveza" />
+              <span><i class="fa-solid fa-beer-mug-empty" aria-hidden="true"></i>Cerveza</span>
+            </label>
+            <label class="choice">
+              <input type="radio" name="drink" value="Gaseosa" />
+              <span><i class="fa-solid fa-bottle-water" aria-hidden="true"></i>Gaseosa</span>
+            </label>
+            <label class="choice">
+              <input id="waterChoice" type="radio" name="drink" value="Agua" />
+              <span><i class="fa-solid fa-droplet" aria-hidden="true"></i>Agua</span>
+            </label>
+          </fieldset>
+          <p class="micro-message" id="drinkHint" aria-live="polite"></p>
+
+          <label class="field-label" for="guestCrew">¿Con quién venís?</label>
+          <input
+            class="text-field"
+            id="guestCrew"
+            name="guestCrew"
+            type="text"
+            placeholder="Solo, con alguien, con la banda..."
+          />
+          <p class="micro-message" id="crewHint" aria-live="polite"></p>
+
+          <label class="field-label" for="songRequest">¿Qué canción no puede faltar?</label>
+          <input
+            class="text-field"
+            id="songRequest"
+            name="songRequest"
+            type="text"
+            placeholder="Esa que hace que todos digan 'temazo'"
+          />
+
+          <p class="form-error" id="formError" aria-live="assertive"></p>
+          <button class="submit-action" type="submit">
+            <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>
+            Enviar confirmación
+          </button>
+        </form>
+
+        <aside class="map-panel" aria-label="Mapa del evento">
+          <h2>Cómo llegar</h2>
+          <p>Si el ascensor pregunta, vas al piso 8 con cara de fiesta.</p>
+          <iframe
+            title="Mapa de Calle 10 4630 Piso 8"
+            src="https://www.google.com/maps?q=Calle%2010%204630%20Piso%208&output=embed"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            allowfullscreen
+          ></iframe>
+        </aside>
+      </section>
+    </main>
+
+    <button class="dont-touch" id="dontTouch" type="button">No tocar</button>
+
+    <div class="easter-toast" id="easterToast" role="status" hidden>
+      Candela 20.0 desbloqueada. Se habilita el modo leyenda.
+    </div>
+
+    <div class="success-celebration" id="successCelebration" role="dialog" aria-modal="true" hidden>
+      <div class="success-card animate__animated animate__bounceIn">
+        <button class="close-success" id="closeSuccess" type="button" aria-label="Cerrar">
+          <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+        </button>
+        <i class="fa-solid fa-star" aria-hidden="true"></i>
+        <h2>¡Listo! Tu lugar quedó reservado.</h2>
+        <p>Candela ya está preparando el cumpleaños.</p>
+      </div>
+    </div>
+
+    <div class="meme-layer" id="memeLayer" aria-hidden="true"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
