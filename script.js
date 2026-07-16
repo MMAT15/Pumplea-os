@@ -1,5 +1,6 @@
 const EVENT_DATE = new Date("2026-07-26T00:00:00-03:00");
 const STORAGE_KEY = "candela-20-rsvp-responses";
+const HOST_WHATSAPP_NUMBER = "5491159584851";
 const COLORS = ["#ff4f8d", "#28d8ff", "#77f7a4", "#ffd84f", "#7f55ff", "#ff8a4c"];
 
 const $ = (selector) => document.querySelector(selector);
@@ -288,6 +289,30 @@ function saveResponse(payload) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(current));
 }
 
+function buildHostWhatsAppUrl(payload) {
+  const message = [
+    "🎉 Confirmación cumple 20 de Candela",
+    "",
+    `Nombre: ${payload.name}`,
+    `¿Viene?: ${payload.attendance}`,
+    `¿Trae regalo?: ${payload.gift}`,
+    `Toma: ${payload.drink}`,
+    `Viene con: ${payload.crew || "No especificó"}`,
+    `Canción: ${payload.song || "No especificó"}`,
+  ].join("\n");
+
+  return `https://wa.me/${HOST_WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+}
+
+function sendResponseToHost(payload) {
+  const whatsappUrl = buildHostWhatsAppUrl(payload);
+  const opened = window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+
+  if (!opened) {
+    window.location.href = whatsappUrl;
+  }
+}
+
 function submitRsvp(event) {
   event.preventDefault();
   formError.textContent = "";
@@ -322,6 +347,7 @@ function submitRsvp(event) {
   };
 
   saveResponse(payload);
+  sendResponseToHost(payload);
   celebrationSound();
   burstConfetti({ count: 220, spread: 108 });
   successCelebration.hidden = false;
@@ -532,14 +558,14 @@ function bindEvents() {
 
   attendanceNo.addEventListener("change", triggerNoAttendance);
 
-  $$("input[name='gift']").forEach((input) => {
+  $$('input[name="gift"]').forEach((input) => {
     input.addEventListener("change", () => {
       if (input.value === "No") triggerGiftNo();
       if (input.value === "Sí") triggerGiftYes();
     });
   });
 
-  $$("input[name='drink']").forEach((input) => {
+  $$('input[name="drink"]').forEach((input) => {
     input.addEventListener("change", handleDrinkChange);
   });
 
