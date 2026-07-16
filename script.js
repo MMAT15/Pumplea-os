@@ -42,6 +42,7 @@ let ageClicks = 0;
 let lastPointer;
 let movementScore = 0;
 let particles = [];
+let attendanceNoEscape = { x: 0, y: 0 };
 
 function ensureAudio() {
   if (!audioContext) {
@@ -211,6 +212,70 @@ function makeButtonRunaway(button, duration = 3600) {
       button.classList.remove("runaway");
     }
   }, 260);
+}
+
+function keepAttendanceNoUnselected() {
+  attendanceNo.checked = false;
+  sadPanel.hidden = false;
+  sadPanel.classList.add("animate__animated", "animate__fadeIn");
+  rainLayer.classList.add("active");
+  sadSound();
+
+  setTimeout(() => {
+    rainLayer.classList.remove("active");
+  }, 2200);
+}
+
+function moveAttendanceNoAway(pointerX, pointerY) {
+  const formRect = form.getBoundingClientRect();
+  const labelRect = attendanceNoLabel.getBoundingClientRect();
+  const maxX = Math.max(90, formRect.width - labelRect.width - 20);
+  const maxY = Math.max(64, formRect.height - labelRect.height - 20);
+  let nextX = Math.random() * maxX - 20;
+  let nextY = Math.random() * maxY - 20;
+
+  for (let attempt = 0; attempt < 12; attempt += 1) {
+    const centerX = formRect.left + nextX + labelRect.width / 2;
+    const centerY = formRect.top + nextY + labelRect.height / 2;
+    const distance = Math.hypot(centerX - pointerX, centerY - pointerY);
+
+    if (distance > 190) break;
+    nextX = Math.random() * maxX - 20;
+    nextY = Math.random() * maxY - 20;
+  }
+
+  attendanceNoEscape = { x: nextX, y: nextY };
+  attendanceNoLabel.style.transform = `translate(${nextX}px, ${nextY}px) rotate(${Math.random() * 16 - 8}deg)`;
+}
+
+function setupUntouchableNoButton() {
+  attendanceNoLabel.classList.add("untouchable");
+  attendanceNo.setAttribute("aria-disabled", "true");
+
+  attendanceNoLabel.addEventListener("pointerenter", (event) => {
+    maybeStartMusic();
+    moveAttendanceNoAway(event.clientX, event.clientY);
+  });
+
+  attendanceNoLabel.addEventListener("pointermove", (event) => {
+    const rect = attendanceNoLabel.getBoundingClientRect();
+    const distance = Math.hypot(
+      event.clientX - (rect.left + rect.width / 2),
+      event.clientY - (rect.top + rect.height / 2)
+    );
+
+    if (distance < 150) {
+      moveAttendanceNoAway(event.clientX, event.clientY);
+    }
+  });
+
+  attendanceNoLabel.addEventListener("click", (event) => {
+    event.preventDefault();
+    keepAttendanceNoUnselected();
+    moveAttendanceNoAway(event.clientX || window.innerWidth / 2, event.clientY || window.innerHeight / 2);
+  });
+
+  attendanceNo.addEventListener("change", keepAttendanceNoUnselected);
 }
 
 function triggerNoAttendance() {
@@ -556,7 +621,7 @@ function bindEvents() {
     if (event.key === "Enter" || event.key === " ") triggerAgeEgg();
   });
 
-  attendanceNo.addEventListener("change", triggerNoAttendance);
+  setupUntouchableNoButton();
 
   $$('input[name="gift"]').forEach((input) => {
     input.addEventListener("change", () => {
