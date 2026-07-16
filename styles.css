@@ -664,6 +664,14 @@ h1 {
   z-index: 4;
 }
 
+.choice.untouchable {
+  will-change: transform;
+}
+
+.choice.untouchable span {
+  background: rgba(255, 255, 255, 0.6);
+}
+
 .drinks .choice {
   min-width: 128px;
 }
