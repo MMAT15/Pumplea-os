@@ -141,12 +141,12 @@ function setupShareLinks() {
   whatsAppShare.href = `https://wa.me/?text=${encodeURIComponent(invitationText + window.location.href)}`;
 
   const details = encodeURIComponent(
-    "Comida, música, risas y probablemente malas decisiones. Horario a confirmar."
+    "Comida, música, risas y probablemente malas decisiones. Desde las 15:00 hasta que no te dé más el cuerpo."
   );
   const location = encodeURIComponent("Calle 10 4630 - Piso 8");
   calendarLink.href = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(
     "Cumple 20 de Candela Frías"
-  )}&dates=20260726/20260727&details=${details}&location=${location}`;
+  )}&dates=20260726T180000Z/20260727T030000Z&details=${details}&location=${location}`;
 }
 
 function updateCountdown() {
@@ -532,14 +532,14 @@ function bindEvents() {
 
   attendanceNo.addEventListener("change", triggerNoAttendance);
 
-  $$('input[name="gift"]').forEach((input) => {
+  $$("input[name='gift']").forEach((input) => {
     input.addEventListener("change", () => {
       if (input.value === "No") triggerGiftNo();
       if (input.value === "Sí") triggerGiftYes();
     });
   });
 
-  $$('input[name="drink"]').forEach((input) => {
+  $$("input[name='drink']").forEach((input) => {
     input.addEventListener("change", handleDrinkChange);
   });
 
